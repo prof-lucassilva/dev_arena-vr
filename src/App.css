@@ -2,17 +2,6 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -28,11 +17,164 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.App-button {
+  background-color: #61dafb;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.App-button:hover {
+  background-color: #4fa8d5;
+}
+
+.App-logo {
+  height: 150px;
+  width: auto;
+  margin-bottom: 20px;
+}
+
+.App-input {
+  width: 80%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.App-error {
+  color: red;
+  margin-top: 10px;
+}
+
+.App-button-secondary {
+  background-color: #f0f0f0;
+  color: #333;
+  margin-top: 20px;
+}
+
+.App-button-secondary:hover {
+  background-color: #e0e0e0;
+}
+
+.App-button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.objetivo-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.App-input-small {
+  width: 120px;
+}
+
+.objetivos-list {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.tempo-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.tempo-label {
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.tempo-total {
+  font-size: 72px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.tempo-unidade {
+  font-size: 18px;
+  margin-top: 5px;
+}
+
+.objetivos-list {
+  text-align: left;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.card-input-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.card-input-container label {
+  width: 200px;
+  text-align: right;
+  margin-right: 10px;
+}
+
+.card-input-container .App-input {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.App-button-small {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.App-button-small:hover {
+  background-color: #d32f2f;
+}
+
+.boost-input-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.boost-input-container label {
+  width: 350px;
+  text-align: right;
+  margin-right: 10px;
+}
+
+.boost-input-container .App-input {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.App-button-small {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.App-button-small:hover {
+  background-color: #d32f2f;
 }
