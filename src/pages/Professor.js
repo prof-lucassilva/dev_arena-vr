@@ -1,30 +1,60 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import '../App.css';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getLocalStorageData } from '../utils/localStorage';
 
-function Professor() {
+function Professor({ socket }) {
+  const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
+  const [sessions, setSessions] = useState([]);
+  const [newSessionName, setNewSessionName] = useState('');
 
-  // Credenciais definidas no código
-  const validUsername = 'professor';
-  const validPassword = 'senha123';
+  useEffect(() => {
+    socket.on('sessionsUpdate', (updatedSessions) => {
+      setSessions(updatedSessions);
+    });
+
+    return () => {
+      socket.off('sessionsUpdate');
+    };
+  }, [socket]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      socket.emit('requestSessions');
+    }
+  }, [isLoggedIn, socket]);
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (username === validUsername && password === validPassword) {
+    if (username === 'professor' && password === 'admin') {
       setIsLoggedIn(true);
-      setError('');
     } else {
-      setError('Usuário ou senha inválidos');
+      alert('Usuário ou senha inválidos');
     }
   };
 
-  const handleVoltar = () => {
-    navigate('/');
+  const handleCreateSession = () => {
+    if (sessions.length < 3) {
+      if (newSessionName.trim()) {
+        const { objetivos, cards, boosts } = getLocalStorageData();
+        socket.emit('createSession', { name: newSessionName, objetivos, cards, boosts });
+        setNewSessionName('');
+      } else {
+        alert('Por favor, insira um nome para a sessão');
+      }
+    } else {
+      alert('Limite máximo de 3 sessões atingido');
+    }
+  };
+
+  const handleDeleteSession = (sessionId) => {
+    socket.emit('deleteSession', sessionId);
+  };
+
+  const handleEditSession = (sessionId) => {
+    navigate(`/editar-sessao/${sessionId}`);
   };
 
   if (!isLoggedIn) {
@@ -35,22 +65,20 @@ function Professor() {
           <form onSubmit={handleLogin}>
             <input
               type="text"
-              placeholder="Usuário"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              placeholder="Usuário"
               className="App-input"
             />
             <input
               type="password"
-              placeholder="Senha"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder="Senha"
               className="App-input"
             />
             <button type="submit" className="App-button">Entrar</button>
-          <button onClick={handleVoltar} className="App-button App-button-secondary">Voltar</button>
           </form>
-          {error && <p className="App-error">{error}</p>}
         </header>
       </div>
     );
@@ -59,12 +87,26 @@ function Professor() {
   return (
     <div className="App">
       <header className="App-header">
-        <h2>Página do Professor</h2>
+        <h2>Painel do Professor</h2>
         <div>
-          <Link to="/criar-sessao" className="App-button">Criar Sessão</Link>
-          <Link to="/entrar-sessao" className="App-button">Entrar na Sessão</Link>
+          <input
+            type="text"
+            value={newSessionName}
+            onChange={(e) => setNewSessionName(e.target.value)}
+            placeholder="Nome da nova sessão"
+            className="App-input"
+          />
+          <button onClick={handleCreateSession} className="App-button">Criar Sessão</button>
         </div>
-        <button onClick={handleVoltar} className="App-button App-button-secondary">Voltar</button>
+        <h3>Sessões Ativas:</h3>
+        {sessions.map((session) => (
+          <div key={session.id} className="session-item">
+            <span>{session.name}</span>
+            <button onClick={() => handleEditSession(session.id)} className="App-button">Editar</button>
+            <button onClick={() => handleDeleteSession(session.id)} className="App-button App-button-secondary">Excluir</button>
+          </div>
+        ))}
+        <button onClick={() => navigate('/')} className="App-button App-button-secondary">Voltar</button>
       </header>
     </div>
   );
