@@ -20,3 +20,8 @@ Este projeto é uma aplicação React que permite a criação e gerenciamento de
 - React
 - React Router para navegação
 - localStorage para armazenamento de dados local
+
+## Rodando o projeto
+
+- npm run build
+- node server.js
